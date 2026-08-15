@@ -17,3 +17,14 @@ export const customFieldSchema = z.object({
   id: z.number(),
   value: z.unknown().optional()
 });
+
+export const ticketContextSchema = z.object({
+  ticketId: z.number(),
+  subject: z.string(),
+  description: z.string(),
+  status: z.string(),
+  priority: z.string().nullable(),
+  tags: z.array(z.string()),
+  customFields: z.array(customFieldSchema),
+  messages: z.array(messageSchema)
+});
