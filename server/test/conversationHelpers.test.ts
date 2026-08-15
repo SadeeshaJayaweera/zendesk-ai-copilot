@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getLatestCustomerMessage, getRecentMessages } from "../src/services/zendesk/conversationHelpers.js";
+import { conversationHash, getLatestCustomerMessage, getRecentMessages } from "../src/services/zendesk/conversationHelpers.js";
 import type { TicketContext } from "../src/types/ticketContext.js";
 
 describe("conversationHelpers: getLatestCustomerMessage", () => {
@@ -42,5 +42,13 @@ describe("conversationHelpers: getRecentMessages", () => {
       ]
     };
     expect(getRecentMessages(context, 2)).toHaveLength(2);
+  });
+});
+
+describe("conversationHelpers: conversationHash", () => {
+  it("should return identical hashes for identical public messages", () => {
+    const ctx1: TicketContext = { ticketId: 1, subject: "", description: "", status: "open", priority: null, tags: [], customFields: [], messages: [{ id: 1, authorRole: "customer", body: "hi", createdAt: "", isPublic: true }] };
+    const ctx2: TicketContext = { ticketId: 1, subject: "", description: "", status: "open", priority: null, tags: [], customFields: [], messages: [{ id: 1, authorRole: "customer", body: "hi", createdAt: "", isPublic: true }] };
+    expect(conversationHash(ctx1)).toBe(conversationHash(ctx2));
   });
 });
