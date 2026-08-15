@@ -7,3 +7,8 @@ export interface Message {
   createdAt: string;
   isPublic: boolean;
 }
+
+export interface CustomField {
+  id: number;
+  value?: unknown;
+}
