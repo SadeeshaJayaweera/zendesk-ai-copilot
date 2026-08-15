@@ -12,3 +12,14 @@ export interface CustomField {
   id: number;
   value?: unknown;
 }
+
+export interface TicketContext {
+  ticketId: number;
+  subject: string;
+  description: string;
+  status: string;
+  priority: string | null;
+  tags: string[];
+  customFields: CustomField[];
+  messages: Message[];
+}
