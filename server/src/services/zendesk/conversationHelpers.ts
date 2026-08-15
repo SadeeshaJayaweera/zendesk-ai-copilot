@@ -16,3 +16,10 @@ export function conversationHash(context: TicketContext): string {
   const data = publicMsgs.map((m) => `${m.id}:${m.authorRole}:${m.body}`).join("|");
   return crypto.createHash("sha256").update(data).digest("hex");
 }
+
+export function filterCustomerFacingContext(context: TicketContext): TicketContext {
+  return {
+    ...context,
+    messages: context.messages.filter((m) => m.isPublic)
+  };
+}
