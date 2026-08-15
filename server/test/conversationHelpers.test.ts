@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getLatestCustomerMessage } from "../src/services/zendesk/conversationHelpers.js";
+import { getLatestCustomerMessage, getRecentMessages } from "../src/services/zendesk/conversationHelpers.js";
 import type { TicketContext } from "../src/types/ticketContext.js";
 
 describe("conversationHelpers: getLatestCustomerMessage", () => {
@@ -28,5 +28,19 @@ describe("conversationHelpers: getLatestCustomerMessage", () => {
       ]
     };
     expect(getLatestCustomerMessage(context)?.id).toBe(3);
+  });
+});
+
+describe("conversationHelpers: getRecentMessages", () => {
+  it("should return up to n recent public messages", () => {
+    const context: TicketContext = {
+      ticketId: 101, subject: "Test", description: "", status: "open", priority: null, tags: [], customFields: [],
+      messages: [
+        { id: 1, authorRole: "customer", body: "1", createdAt: "", isPublic: true },
+        { id: 2, authorRole: "agent", body: "2", createdAt: "", isPublic: false },
+        { id: 3, authorRole: "agent", body: "3", createdAt: "", isPublic: true }
+      ]
+    };
+    expect(getRecentMessages(context, 2)).toHaveLength(2);
   });
 });
