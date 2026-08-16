@@ -1,3 +1,5 @@
+import { rewriteActionSchema } from "../types/ai.js";
+import { rewriteDraft } from "../services/ai/rewrite.js";
 import { generateReply } from "../services/ai/generateReply.js";
 import { z } from "zod";
 import { analyzeDraft } from "../services/ai/analyzeDraft.js";
@@ -52,5 +54,19 @@ ticketsRouter.post("/:id/generate-reply", async (req: Request, res: Response) =>
   const { ticketContext, toneOverride, agentDraft } = parseResult.data;
   const analysis = await analyzeConversation(ticketContext);
   const result = await generateReply(ticketContext, analysis, toneOverride, agentDraft);
+  return res.status(200).json(result);
+});
+
+const rewriteRequestSchema = z.object({
+  ticketContext: ticketContextSchema.optional(),
+  agentDraft: z.string().min(1, "agentDraft cannot be empty"),
+  action: rewriteActionSchema
+});
+
+ticketsRouter.post("/:id/rewrite", async (req: Request, res: Response) => {
+  const parseResult = rewriteRequestSchema.safeParse(req.body);
+  if (!parseResult.success) return res.status(400).json({ error: "invalid_payload" });
+  const { agentDraft, action, ticketContext } = parseResult.data;
+  const result = await rewriteDraft(agentDraft, action, ticketContext);
   return res.status(200).json(result);
 });
