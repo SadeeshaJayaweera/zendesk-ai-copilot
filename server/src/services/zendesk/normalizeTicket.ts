@@ -30,3 +30,33 @@ export function deriveAuthorRole(
   }
   return "agent";
 }
+
+export interface ZendeskTicketRaw {
+  id: number;
+  subject?: string | null;
+  description?: string | null;
+  status?: string | null;
+  priority?: string | null;
+  tags?: string[] | null;
+  custom_fields?: Array<{ id: number; value?: unknown }> | null;
+  requester_id?: number | null;
+}
+
+export interface ZendeskCommentRaw {
+  id: number | string;
+  type?: string;
+  author_id?: number | null;
+  body?: string | null;
+  plain_body?: string | null;
+  public?: boolean;
+  created_at?: string;
+}
+
+export interface ZendeskTicketResponseRaw {
+  ticket: ZendeskTicketRaw;
+}
+
+export interface ZendeskCommentsResponseRaw {
+  comments: ZendeskCommentRaw[];
+  users?: ZendeskUserRaw[];
+}
