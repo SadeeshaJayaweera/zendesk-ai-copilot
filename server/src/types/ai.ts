@@ -19,3 +19,6 @@ export const customerIntentSchema = z.enum([
   "general"
 ]);
 export type CustomerIntent = z.infer<typeof customerIntentSchema>;
+
+export const urgencyLevelSchema = z.enum(["low", "medium", "high", "urgent"]);
+export type UrgencyLevel = z.infer<typeof urgencyLevelSchema>;
