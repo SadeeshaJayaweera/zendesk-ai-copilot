@@ -73,3 +73,24 @@ export const generateReplySchema = z.object({
   warnings: z.array(z.string()).optional()
 });
 export type GenerateReplyResult = z.infer<typeof generateReplySchema>;
+
+export const rewriteActionSchema = z.enum([
+  "improveTone",
+  "makeMoreProfessional",
+  "makeMoreFriendly",
+  "makeMoreEmpathetic",
+  "makeMoreConcise",
+  "makeMoreClear",
+  "makeLessRobotic",
+  "makeMoreConfident",
+  "deEscalate",
+  "rewriteCompletely"
+]);
+export type RewriteAction = z.infer<typeof rewriteActionSchema>;
+
+export const rewriteResponseSchema = z.object({
+  rewrittenText: z.string(),
+  actionApplied: rewriteActionSchema,
+  warnings: z.array(z.string()).optional()
+});
+export type RewriteResponse = z.infer<typeof rewriteResponseSchema>;
