@@ -12,6 +12,10 @@
   --border: #e6e8eb;
   --text: #171b20;
   --text-muted: #68737d;
+  --badge-bg: #edf5fd;
+  --success: #038153;
+  --warning: #ad5700;
+  --danger: #cc3340;
   --radius: 8px;
 }
 
@@ -29,3 +33,228 @@ body {
   flex-direction: column;
   gap: 12px;
 }
+
+.copilot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.copilot-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copilot-brand h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.status-pill--ready {
+  background-color: #e6f7ef;
+  color: var(--success);
+}
+
+.status-pill--loading {
+  background-color: #fff8e6;
+  color: var(--warning);
+}
+
+.status-pill--error {
+  background-color: #fde8e9;
+  color: var(--danger);
+}
+
+.status-pill--idle {
+  background-color: #f3f4f6;
+  color: var(--text-muted);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.meta-val {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-sentiment { background: #e0f2fe; color: #0369a1; }
+.badge-urgency { background: #fef3c7; color: #b45309; }
+
+.copilot-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  gap: 6px;
+}
+
+.copilot-btn:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.copilot-btn--primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.copilot-btn--primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.copilot-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-bar-wrapper {
+  margin: 6px 0;
+}
+
+.score-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.score-bar-track {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.suggestion-box {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius);
+  padding: 10px;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 8px 0;
+}
+
+.feedback-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+}
+
+.feedback-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.feedback-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.feedback-btn:hover {
+  background: #edf2f7;
+}
+
+.details-toggle {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(18, 115, 234, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 0.8s linear infinite;
+  margin: 20px auto 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.muted { color: var(--text-muted); }
