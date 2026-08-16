@@ -1,3 +1,4 @@
+import { generateReply } from "../services/ai/generateReply.js";
 import { z } from "zod";
 import { analyzeDraft } from "../services/ai/analyzeDraft.js";
 import { Router, type Request, type Response } from "express";
@@ -36,5 +37,20 @@ ticketsRouter.post("/:id/draft-analysis", async (req: Request, res: Response) =>
     return res.status(400).json({ error: "invalid_payload", details: parseResult.error.issues });
   }
   const result = await analyzeDraft(parseResult.data.ticketContext, parseResult.data.agentDraft);
+  return res.status(200).json(result);
+});
+
+const generateReplyRequestSchema = z.object({
+  ticketContext: ticketContextSchema,
+  toneOverride: z.string().optional(),
+  agentDraft: z.string().optional()
+});
+
+ticketsRouter.post("/:id/generate-reply", async (req: Request, res: Response) => {
+  const parseResult = generateReplyRequestSchema.safeParse(req.body);
+  if (!parseResult.success) return res.status(400).json({ error: "invalid_payload" });
+  const { ticketContext, toneOverride, agentDraft } = parseResult.data;
+  const analysis = await analyzeConversation(ticketContext);
+  const result = await generateReply(ticketContext, analysis, toneOverride, agentDraft);
   return res.status(200).json(result);
 });
