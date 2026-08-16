@@ -8,6 +8,7 @@
     if (typeof ZAFClient !== "undefined") {
       zafClient = ZAFClient.init();
       zafClient.invoke("resize", { width: "100%", height: "550px" });
+      zafClient.on("ticket.updated", function() { /* refresh */ });
     }
   }
   if (document.readyState === "loading") {
