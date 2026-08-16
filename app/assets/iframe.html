@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Zendesk AI Reply Copilot</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="copilot-container">
+    <header class="copilot-header">
+      <div class="copilot-brand">
+        <span class="copilot-logo">✨</span>
+        <h2>AI Reply Copilot</h2>
+      </div>
+      <span id="status-pill" class="status-pill status-pill--idle">Initializing</span>
+    </header>
+
+    <main id="content">
+      <div class="loading-spinner-wrapper">
+        <div class="spinner"></div>
+        <p class="muted">Loading conversation context...</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
