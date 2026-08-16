@@ -1,0 +1,27 @@
+{
+  "name": "AI Reply Copilot",
+  "author": {
+    "name": "Your Company",
+    "email": "support-eng@yourcompany.com"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": {
+    "support": {
+      "ticket_sidebar": {
+        "url": "assets/iframe.html",
+        "flexible": true
+      }
+    }
+  },
+  "frameworkVersion": "2.0",
+  "signedUrls": false,
+  "parameters": [
+    {
+      "name": "backend_base_url",
+      "type": "text",
+      "required": true,
+      "helpText": "Base URL of the AI Reply Copilot backend, e.g. https://copilot-api.yourcompany.com"
+    }
+  ]
+}
