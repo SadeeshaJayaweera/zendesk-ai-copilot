@@ -65,3 +65,11 @@ export const draftAnalysisSchema = z.object({
   recommended_changes: z.array(z.string())
 });
 export type DraftAnalysis = z.infer<typeof draftAnalysisSchema>;
+
+export const generateReplySchema = z.object({
+  reply: z.string(),
+  missing_information: z.array(z.string()).default([]),
+  tone_used: z.string(),
+  warnings: z.array(z.string()).optional()
+});
+export type GenerateReplyResult = z.infer<typeof generateReplySchema>;
