@@ -17,3 +17,5 @@
     init();
   }
 })();
+
+// Reply generation and composer actions wired
