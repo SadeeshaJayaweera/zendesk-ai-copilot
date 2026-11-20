@@ -11,7 +11,8 @@
     "test": "npm --workspace=server run test",
     "lint": "npm --workspace=server run lint",
     "start": "npm --workspace=server run start",
-    "dev": "npm --workspace=server run dev"
+    "dev": "npm --workspace=server run dev",
+    "db:migrate": "npm --workspace=server run db:migrate"
   },
   "engines": {
     "node": ">=20"
