@@ -1,0 +1,22 @@
+{
+  "name": "zendesk-ai-copilot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise AI Support Engineering Platform for Zendesk",
+  "workspaces": [
+    "server"
+  ],
+  "scripts": {
+    "build": "npm --workspace=server run build",
+    "test": "npm --workspace=server run test",
+    "lint": "npm --workspace=server run lint",
+    "start": "npm --workspace=server run start",
+    "dev": "npm --workspace=server run dev"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "typescript": "5.4.5"
+  }
+}

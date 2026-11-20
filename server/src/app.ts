@@ -4,9 +4,11 @@ import helmet from "helmet";
 import pinoHttp from "pino-http";
 import { env } from "./config/env.js";
 import { logger } from "./config/logger.js";
+import { correlationIdMiddleware } from "./middleware/correlationId.js";
 import { healthRouter } from "./routes/health.js";
 import { ticketsRouter } from "./routes/tickets.js";
 import { adminRouter } from "./routes/admin.js";
+import { agentsRouter } from "./routes/agents.js";
 
 export function createApp(): Express {
   const app = express();
@@ -33,10 +35,12 @@ export function createApp(): Express {
       autoLogging: true
     })
   );
+  app.use(correlationIdMiddleware);
 
   app.use("/health", healthRouter);
   app.use("/api/tickets", ticketsRouter);
   app.use("/api/admin", adminRouter);
+  app.use("/api/agents", agentsRouter);
 
   app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
     req.log?.error({ err: err.message }, "Unhandled server error");

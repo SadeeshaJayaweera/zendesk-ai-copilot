@@ -1,6 +1,7 @@
 import { pool } from "./pool.js";
 
 export interface FeedbackEventInput {
+  organizationId?: string;
   ticketId: number;
   agentId: number;
   eventType: "helpful" | "not_helpful" | "accepted" | "edited" | "rejected";
@@ -8,12 +9,13 @@ export interface FeedbackEventInput {
 }
 
 export async function insertFeedbackEvent(event: FeedbackEventInput): Promise<number> {
+  const orgId = event.organizationId || "default";
   const query = `
-    INSERT INTO feedback_events (ticket_id, agent_id, event_type, action, created_at)
-    VALUES ($1, $2, $3, $4, NOW())
+    INSERT INTO feedback_events (organization_id, ticket_id, agent_id, event_type, action, created_at)
+    VALUES ($1, $2, $3, $4, $5, NOW())
     RETURNING id;
   `;
-  const values = [event.ticketId, event.agentId, event.eventType, event.action || null];
+  const values = [orgId, event.ticketId, event.agentId, event.eventType, event.action || null];
   const res = await pool.query(query, values);
   return res.rows[0].id;
 }

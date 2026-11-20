@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -13,6 +11,32 @@ services:
       - "5432:5432"
     volumes:
       - copilot_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U copilot -d copilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: copilot-server
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      AI_PROVIDER: mock
+      DATABASE_URL: postgresql://copilot:copilot@postgres:5432/copilot
+      ADMIN_API_KEY: dev-admin-api-key-change-in-production
+      JWT_SECRET: dev-jwt-secret-min-32-chars-long-for-testing
+      ZENDESK_CLIENT_SECRET: dev-zendesk-secret-min-32-chars-long
+      LOG_LEVEL: info
+    ports:
+      - "4000:4000"
 
 volumes:
   copilot_pg_data:

@@ -3,9 +3,11 @@ import request from "supertest";
 import { createApp } from "../src/app.js";
 import type { TicketContext } from "../src/types/ticketContext.js";
 import * as aiClient from "../src/services/ai/openaiClient.js";
+import { generateTestJwt } from "../src/middleware/auth.js";
 
 describe("POST /api/tickets/:id/context", () => {
   const app = createApp();
+  const token = generateTestJwt({ subdomain: "acme-corp", user_id: 42, role: "agent" });
 
   const validContext: TicketContext = {
     ticketId: 1234,
@@ -48,6 +50,7 @@ describe("POST /api/tickets/:id/context", () => {
 
     const res = await request(app)
       .post("/api/tickets/1234/context")
+      .set("Authorization", `Bearer ${token}`)
       .send(validContext);
 
     expect(res.status).toBe(200);
@@ -59,6 +62,7 @@ describe("POST /api/tickets/:id/context", () => {
   it("returns 400 if URL ticket ID does not match body ticket ID", async () => {
     const res = await request(app)
       .post("/api/tickets/9999/context")
+      .set("Authorization", `Bearer ${token}`)
       .send(validContext);
 
     expect(res.status).toBe(400);
@@ -80,6 +84,7 @@ describe("POST /api/tickets/:id/context", () => {
 
     const res = await request(app)
       .post("/api/tickets/1234/context")
+      .set("Authorization", `Bearer ${token}`)
       .send(invalidPayload);
 
     expect(res.status).toBe(400);

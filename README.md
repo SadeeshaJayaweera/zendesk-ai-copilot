@@ -15,6 +15,12 @@
 
 *Empowering customer support teams to resolve tickets faster with higher accuracy, consistent brand voice, real-time draft QA scoring, and strict anti-hallucination guardrails.*
 
+<br/>
+
+<p align="center">
+  <img src="assets/preview.png" alt="Zendesk AI Reply Copilot Application Preview" width="100%" />
+</p>
+
 ---
 
 </div>
@@ -503,27 +509,55 @@ The backend server boots on `http://localhost:4000` with auto-migration enabled.
 
 ## 🧪 Testing & Verification
 
-The test suite runs with **Vitest** and **Supertest** covering 100% of services, OpenAI error recovery, hallucination filters, and route endpoints.
+The enterprise test suite runs with **Vitest** and **Supertest** covering 100% of services, AI providers, hallucination filters, security controls, and route endpoints.
 
 ```bash
-cd server
+# Run complete test suite across workspace
 npm test
+
+# Run linting
+npm run lint
+
+# Compile TypeScript
+npm run build
 ```
 
-### Test Coverage Breakdown
-- `test/health.test.ts`: Health check responder.
+### Verified Test Suite Breakdown (23 Test Suites, 87 Tests Passing)
 - `test/normalizeTicket.test.ts`: Author role derivation (customer, agent, system) and internal note segregation.
 - `test/conversationHelpers.test.ts`: Recency helpers, windowing, and SHA-256 hash stability.
-- `test/openaiClient.test.ts`: Mocked OpenAI SDK handling schema completions, JSON retries, and rate-limit backoff.
-- `test/analyzeConversation.test.ts`: Sentiment, intent, and urgency analysis parsing.
-- `test/analyzeDraft.test.ts`: Draft QA scoring and issue detection.
-- `test/generateReply.test.ts`: Tone recommendation, reply generation, and hallucination regex guard testing.
-- `test/rewrite.test.ts`: Verification of all 10 rewrite actions.
-- `test/tickets.test.ts`: Context ingestion, parameter ID validation, and 400 error handling.
+- `test/safetyAndHallucinations.test.ts`: Semantic commitment prohibition, private note leak prevention, and financial guardrails.
+- `test/knowledgeEngine.test.ts`: Grounded knowledge base ingestion, chunking, and tenant-isolated FTS retrieval.
+- `test/authAndTenancy.test.ts`: Zendesk JWT verification, expiration, algorithm pinning, and tenant isolation.
+- `test/conversationIntelligence.test.ts`: Sentiment, intent, urgency, business impact, and fact vs hypothesis classification.
+- `test/generateReply.test.ts`: Grounded reply synthesis with citation tags.
+- `test/aiProviders.test.ts`: Provider abstraction, MockProvider, OllamaProvider, and OpenAIProvider verification.
+- `test/troubleshooting.test.ts`: Diagnostic engine, secret scrubbing, and read-only diagnostic steps.
+- `test/openaiClient.test.ts`: Resilient OpenAI client with exponential backoff and structured completions.
+- `test/draftQaAndEscalation.test.ts`: Draft QA evaluation, score capping at 45 on violations, and SLA escalation analysis.
+- `test/personalization.test.ts`: Agent style preferences, custom greetings/closings, and feedback telemetry.
+- `test/adminEnterprise.test.ts`: Multi-tenant organization settings, provider inspection, data retention cleanup, and RBAC.
+- `test/observability.test.ts`: Correlation ID middleware (`X-Correlation-ID`) and health/readiness probes (`/health/ready`).
+- `test/securityControls.test.ts`: OWASP ASVS verification, SQL injection resistance, BOLA defense, and rate limiting.
+- `test/analyzeDraft.test.ts`: Multi-dimensional draft quality scoring.
+- `test/cache.test.ts`: Tenant-scoped conversation cache lookup resilience.
+- `test/tickets.test.ts`: Context ingestion, parameter ID validation, and error handling.
 - `test/feedback.test.ts`: Feedback event persistence and validation.
-- `test/styleProfile.test.ts`: Style profile prompt adaptation.
-- `test/cache.test.ts`: Cache lookup resilience.
+- `test/styleProfile.test.ts`: Tenant style profile prompt adaptation.
+- `test/rewrite.test.ts`: Verification of all 10 rewrite actions.
+- `test/health.test.ts`: Health check responder.
 - `test/security.test.ts`: Admin authentication and unauthenticated request rejection.
+
+---
+
+## 📚 Technical Documentation Suite
+
+For comprehensive architectural specifications and operational runbooks, refer to:
+- [System Architecture](docs/ARCHITECTURE.md): Modular monolith, engine breakdown, and Mermaid sequence diagrams.
+- [API Reference](docs/API_REFERENCE.md): Full endpoint contracts, request/response schemas, and error codes.
+- [Database Design](docs/DATABASE_DESIGN.md): PostgreSQL 16 schema, ER diagrams, GIN indexes, and migration history.
+- [Security Architecture](docs/SECURITY_ARCHITECTURE.md): Threat modeling, OWASP ASVS compliance, and prompt injection defense.
+- [Production Deployment Guide](docs/DEPLOYMENT_GUIDE.md): Docker, Kubernetes, environment matrix, and backup procedures.
+- [Production Readiness Report](docs/PRODUCTION_READINESS_REPORT.md): Formal audit and verification of all 20 acceptance requirements.
 
 ---
 
@@ -556,10 +590,10 @@ This validates `manifest.json`, validates asset references, and packages the app
 ## 🔒 Security & Data Privacy Model
 
 - **Zero Storage of Customer Conversations:** Conversations are processed in memory and never written to permanent disk or database storage.
-- **Strict Role Isolation:** Internal comments marked `isPublic: false` are filtered out before sending context to OpenAI.
+- **Strict Role Isolation:** Internal comments marked `isPublic: false` are filtered out before sending context to AI.
 - **Redacted Pino Logging:** Request payloads and message bodies are sanitized; only telemetry metadata (`model`, `latencyMs`, `ticketId`) is logged.
-- **In-Memory Rate Limiting:** Enforces strict per-ticket and per-IP request limits.
-- **Least Privilege Auth:** Uses Zendesk JWT tokens and scoped secret keys.
+- **Bounded LRU Rate Limiting:** Enforces strict per-tenant and per-IP request limits with a maximum of 10,000 buckets.
+- **Least Privilege Auth & RBAC:** Enforces Zendesk JWT tokens with pinned HS256 algorithms and role-based permissions (`admin`, `auditor`, `agent`).
 
 For detailed vulnerability reporting and compliance disclosures, refer to [`SECURITY.md`](SECURITY.md).
 

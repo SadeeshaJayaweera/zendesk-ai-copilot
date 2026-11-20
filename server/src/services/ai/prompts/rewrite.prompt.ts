@@ -11,7 +11,9 @@ export const REWRITE_INSTRUCTIONS: Record<RewriteAction, string> = {
   makeLessRobotic: "Remove stiff or repetitive corporate jargon to make the text sound human and authentic.",
   makeMoreConfident: "Remove hesitant qualifiers (e.g. 'I think', 'maybe', 'perhaps') and project confident authority.",
   deEscalate: "De-escalate tension, diffuse conflict, validate customer concerns, and focus constructively on solution steps.",
-  rewriteCompletely: "Completely restructure and rewrite the reply for maximum effectiveness and customer satisfaction."
+  rewriteCompletely: "Completely restructure and rewrite the reply for maximum effectiveness and customer satisfaction.",
+  technicalExplanation: "Provide a detailed technical breakdown of the issue, root cause, and engineering diagnostics.",
+  executiveSummary: "Summarize the situation, customer impact, remediation status, and next steps for executive stakeholders."
 };
 
 export function buildRewritePrompts(

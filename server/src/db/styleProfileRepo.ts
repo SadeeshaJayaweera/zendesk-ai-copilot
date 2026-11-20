@@ -1,6 +1,7 @@
 import { pool } from "./pool.js";
 
 export interface StyleProfileRecord {
+  organizationId?: string;
   subdomain: string;
   companyName: string;
   preferredTone: string;
@@ -12,17 +13,18 @@ export interface StyleProfileRecord {
   preferredClosing: string;
 }
 
-export async function getStyleProfile(subdomain: string): Promise<StyleProfileRecord | null> {
+export async function getStyleProfile(subdomainOrOrg: string): Promise<StyleProfileRecord | null> {
   const query = `
-    SELECT subdomain, company_name, preferred_tone, formality, verbosity,
+    SELECT organization_id, subdomain, company_name, preferred_tone, formality, verbosity,
            use_emojis, use_customer_name, preferred_greeting, preferred_closing
     FROM style_profiles
-    WHERE subdomain = $1;
+    WHERE subdomain = $1 OR organization_id = $1;
   `;
-  const res = await pool.query(query, [subdomain]);
+  const res = await pool.query(query, [subdomainOrOrg]);
   if (res.rows.length === 0) return null;
   const r = res.rows[0];
   return {
+    organizationId: r.organization_id || "default",
     subdomain: r.subdomain,
     companyName: r.company_name,
     preferredTone: r.preferred_tone,
@@ -36,13 +38,15 @@ export async function getStyleProfile(subdomain: string): Promise<StyleProfileRe
 }
 
 export async function upsertStyleProfile(profile: StyleProfileRecord): Promise<void> {
+  const orgId = profile.organizationId || profile.subdomain || "default";
   const query = `
     INSERT INTO style_profiles (
-      subdomain, company_name, preferred_tone, formality, verbosity,
+      organization_id, subdomain, company_name, preferred_tone, formality, verbosity,
       use_emojis, use_customer_name, preferred_greeting, preferred_closing, updated_at
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
     ON CONFLICT (subdomain) DO UPDATE SET
+      organization_id = EXCLUDED.organization_id,
       company_name = EXCLUDED.company_name,
       preferred_tone = EXCLUDED.preferred_tone,
       formality = EXCLUDED.formality,
@@ -54,6 +58,7 @@ export async function upsertStyleProfile(profile: StyleProfileRecord): Promise<v
       updated_at = NOW();
   `;
   await pool.query(query, [
+    orgId,
     profile.subdomain,
     profile.companyName,
     profile.preferredTone,

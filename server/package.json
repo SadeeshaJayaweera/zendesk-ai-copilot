@@ -14,17 +14,20 @@
   "engines": {
     "node": ">=20"
   },
+  "overrides": {
+    "typescript": "5.4.5"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.3",
     "openai": "^6.49.0",
-    "pg": "^8.23.0",
+    "pg": "^8.13.1",
     "pino": "^9.2.0",
     "pino-http": "^10.1.0",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -33,9 +36,12 @@
     "@types/node": "^20.14.2",
     "@types/pg": "^8.21.0",
     "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
     "supertest": "^7.0.0",
     "tsx": "^4.15.6",
     "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.1"
   }
 }
